@@ -1,0 +1,12 @@
+<div mat-dialog-title>
+    <h3>Download selected items</h3>
+</div>
+
+<div mat-dialog-content cdkFocusRegionStart>
+  <app-download-summary [data]="data"></app-download-summary>
+</div>
+
+<div mat-dialog-actions>
+  <button color="primary" mat-button [mat-dialog-close]="">Close</button>
+  <button color="primary" mat-flat-button [mat-dialog-close]="">OK</button>
+</div>

@@ -1,0 +1,47 @@
+<ng-container *ngIf="data; else loading">
+    <div class="row">
+        <button mat-button>{{ selection.selected.length }} item(s) selected</button>
+        <button mat-raised-button *ngIf="selection.selected.length > 0" (click)="openDialog()">
+            <app-icon class="download" status="download"></app-icon>
+            Download selected items
+        </button>
+    </div>
+    <table mat-table [dataSource]="data" class="mat-elevation-z8">
+        <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox color="primary" (change)="$event ? masterToggle() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()">
+                </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+                <mat-checkbox color="primary" (click)="$event.stopPropagation()" [disabled]="row.status !== 'available'"
+                    (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+                </mat-checkbox>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let item"> {{ item.name }} </td>
+        </ng-container>
+        <ng-container matColumnDef="device">
+            <th mat-header-cell *matHeaderCellDef> Device </th>
+            <td mat-cell *matCellDef="let item"> {{ item.device }} </td>
+        </ng-container>
+        <ng-container matColumnDef="path">
+            <th mat-header-cell *matHeaderCellDef> Path </th>
+            <td mat-cell *matCellDef="let item"> {{ item.path }} </td>
+        </ng-container>
+        <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef> Status </th>
+            <td mat-cell *matCellDef="let item">
+                <app-icon [status]="item.status"></app-icon>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="['select', 'name', 'device', 'path', 'status']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['select', 'name', 'device', 'path', 'status'];"></tr>
+    </table>
+</ng-container>
+<ng-template #loading>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</ng-template>
